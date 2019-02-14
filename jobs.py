@@ -3,15 +3,15 @@ from bs4 import BeautifulSoup
 import re
 import time
 import random
-import xlwt  # ÓÃÀ´´´½¨excelÎÄµµ²¢Ğ´ÈëÊı¾İ
-m=0 # ĞòºÅ
+import xlwt  # ç”¨æ¥åˆ›å»ºexcelæ–‡æ¡£å¹¶å†™å…¥æ•°æ®
+m=0 # åºå·
 def getHtml(url):
     head = {}
-    # Ğ´ÈëUser AgentĞÅÏ¢
+    # å†™å…¥User Agentä¿¡æ¯
     head['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
-    # ´´½¨Request¶ÔÏó
+    # åˆ›å»ºRequestå¯¹è±¡
     req = urllib.request.Request(url, headers=head)
-    # ´«Èë´´½¨ºÃµÄRequest¶ÔÏó
+    # ä¼ å…¥åˆ›å»ºå¥½çš„Requestå¯¹è±¡
     page = urllib.request.urlopen(req)
   #  page=urllib.request.urlopen(url,headers=head)
     html=page.read()
@@ -21,27 +21,27 @@ def choice(html):
     soup=BeautifulSoup(html,"lxml")
     divs=soup.find_all('div',class_='jobList')
    # print(divs)
-    area=soup.find('span',class_='loc f16')#¹¤×÷ËùÔÚµØ
+    area=soup.find('span',class_='loc f16')#å·¥ä½œæ‰€åœ¨åœ°
     area=area.em.text
     #print(area)
-    global m  # globalÉùÃ÷£¬ÒâË¼ÊÇËµglobalÓï¾ä¿ÉÒÔÉùÃ÷Ò»¸ö»ò¶à¸ö±äÁ¿ÎªÈ«¾Ö±äÁ¿¡£¸ÃÉùÃ÷½öÔÚµ±Ç°´úÂë¿éÖĞÓĞĞ§¡£³ı´ËÖ®Íâ£¬Ã»°ì·¨·ÃÎÊÈ«¾Ö±äÁ¿¡£
+    global m  # globalå£°æ˜ï¼Œæ„æ€æ˜¯è¯´globalè¯­å¥å¯ä»¥å£°æ˜ä¸€ä¸ªæˆ–å¤šä¸ªå˜é‡ä¸ºå…¨å±€å˜é‡ã€‚è¯¥å£°æ˜ä»…åœ¨å½“å‰ä»£ç å—ä¸­æœ‰æ•ˆã€‚é™¤æ­¤ä¹‹å¤–ï¼Œæ²¡åŠæ³•è®¿é—®å…¨å±€å˜é‡ã€‚
     for div in divs:
-        time.sleep(random.randint(0,1))## ÔİÍ£0~3ÃëµÄÕûÊıÃë£¬Ê±¼äÇø¼ä£º[1,3]
+        time.sleep(random.randint(0,1))## æš‚åœ0~3ç§’çš„æ•´æ•°ç§’ï¼Œæ—¶é—´åŒºé—´ï¼š[1,3]
         m = m + 1
 
-        names = div.span.a.get_text()  # ¹¤Î»¸ÚÎ»
-        salary_time = div.find_all("span", {"class": "e2"})  # ¹¤×ÊºÍ¸üĞÂÊ±¼ä
+        names = div.span.a.get_text()  # å·¥ä½å²—ä½
+        salary_time = div.find_all("span", {"class": "e2"})  # å·¥èµ„å’Œæ›´æ–°æ—¶é—´
 
         salary = salary_time[1].text
         update =salary_time[0].text
-        company = div.find("span", {"class": "e3 cutWord"})  # ¹«Ë¾Ãû³Æ
+        company = div.find("span", {"class": "e3 cutWord"})  # å…¬å¸åç§°
         company = company.a.text
-        scales = div.find_all('em')  # ¹«Ë¾¹æÄ£
+        scales = div.find_all('em')  # å…¬å¸è§„æ¨¡
         scales2=scales[2].text
         scales1=scales[1].text
-        classes = div.em.get_text() #¹¤×÷Àà±ğ
+        classes = div.em.get_text() #å·¥ä½œç±»åˆ«
 
-        link = div.a.get('href')  # ÕÒµ½Á´½Ó,½øÈëÏÂÒ»¸öÒ³Ãæ
+        link = div.a.get('href')  # æ‰¾åˆ°é“¾æ¥,è¿›å…¥ä¸‹ä¸€ä¸ªé¡µé¢
         a = getHtml(link)
         a_soup = BeautifulSoup(a, "lxml")
         a_div = a_soup.find_all("div", {"class": "job_require"})
@@ -50,11 +50,11 @@ def choice(html):
         if a_all_number>=4:
             education = a_all[3].text
         else:
-            education="²»ÏŞ"
+            education="ä¸é™"
         if a_all_number>=5:
             year = a_all[4].text
         else:
-            year = "¾­ÑéÓ¦½ìÉú"
+            year = "ç»éªŒåº”å±Šç”Ÿ"
       #  results={names,salary,update,company,scales2,scales1,area,classes,education,year}
        # print(results)
         results=[names,update,salary,company,scales2,scales1,area,classes,education,year]
@@ -63,20 +63,20 @@ def choice(html):
             print(results[i])
             ws.write(m,i,results[i])
             wb.save(newTable)
-        print("±£´æ³É¹¦",m)
+        print("ä¿å­˜æˆåŠŸ",m)
         print("-------------")
      #   ws.write(m,0,names)
      #   wb.save(newTable)
-newTable="city3_day30.xls"#±í¸ñÃû³Æ
-wb = xlwt.Workbook(encoding='utf-8')#´´½¨excelÎÄ¼ş£¬ÉùÃ÷±àÂë
-ws = wb.add_sheet('sheet1')#´´½¨±í¸ñ
-headData = ['¹¤×÷¸ÚÎ»','¸üĞÂÊ±¼ä','¹¤×Ê','¹«Ë¾Ãû³Æ','¹«Ë¾¹æÄ£','¹«Ë¾ĞÔÖÊ','ËùÔÚµØ','¹¤×÷Àà±ğ','Ñ§ÀúÒªÇó','¾­ÑéÒªÇó']#±íÍ·²¿ĞÅÏ¢
+newTable="beijing_job.xls"#è¡¨æ ¼åç§°
+wb = xlwt.Workbook(encoding='utf-8')#åˆ›å»ºexcelæ–‡ä»¶ï¼Œå£°æ˜ç¼–ç 
+ws = wb.add_sheet('sheet1')#åˆ›å»ºè¡¨æ ¼
+headData = ['å·¥ä½œå²—ä½','æ›´æ–°æ—¶é—´','å·¥èµ„','å…¬å¸åç§°','å…¬å¸è§„æ¨¡','å…¬å¸æ€§è´¨','æ‰€åœ¨åœ°','å·¥ä½œç±»åˆ«','å­¦å†è¦æ±‚','ç»éªŒè¦æ±‚']#è¡¨å¤´éƒ¨ä¿¡æ¯
 for colnum in range(0, 10):
-    ws.write(0, colnum, headData[colnum], xlwt.easyxf('font: bold on'))  # ĞĞ£¬ÁĞ #°Ñ±íÍ·Ğ´ÔÚµÚ0ĞĞ£¬¸÷ÁĞ£¬²¢°Ñ×ÖÌåÉèÖÃÎª¼Ó´Ö
+    ws.write(0, colnum, headData[colnum], xlwt.easyxf('font: bold on'))  # è¡Œï¼Œåˆ— #æŠŠè¡¨å¤´å†™åœ¨ç¬¬0è¡Œï¼Œå„åˆ—ï¼Œå¹¶æŠŠå­—ä½“è®¾ç½®ä¸ºåŠ ç²—
 
 
 def main(jobs):
-	html = getHtml("http://www.chinahr.com/beijing/jobs/57552/"+str(jobs))#±±¾©
+    html = getHtml("http://www.chinahr.com/beijing/jobs/57552/"+str(jobs))#åŒ—äº¬
 
     choice(html)
 for i in range(1,91):
